@@ -1,21 +1,22 @@
 # Pi-hole + PiVPN
 
-This work was largely based on a tutorial put out by Scaleway. Link here:
-<https://www.scaleway.com/en/docs/tutorials/pihole-vpn/>. For posterity, I've
-downloaded the doc and saved it to a PDF at
+Set up your own ad-blocking + VPN server! Cool features include:
+
+- connecting to your VPN server from any device (laptop, mobile)
+- greater control of your network traffic data (obfuscated from your local network and ISP)
+- granular control over which hostnames to block/allow
+- automation to teardown & setup a new server (~30min)
+
+This work was largely based on a [tutorial put out by
+Scaleway](https://www.scaleway.com/en/docs/tutorials/pihole-vpn/). For
+posterity, I've downloaded the doc and saved it to
 [`scaleway-pihole.pdf`](./scaleway-pihole.pdf).
 
-## Setup AWS Spot
+## Set up compute instance
 
-[Instance comparison](https://instances.vantage.sh/?region=us-west-1&selected=t4g.small,t4g.medium,t4g.micro):
+You can use the Terraform script to set up an [AWS t4g.micro instance](https://instances.vantage.sh/?region=us-west-1&selected=t4g.micro) (1GB, 2vCPU, 5Gbit network, $0.0034 hourly Spot cost).
 
-t4g.micro - 1GB, 2vCPU, 5Gbit network, $0.0034 hourly Spot cost  
-t4g.small - 2GB, 2vCPU, 5Gbit network, $0.0060 hourly Spot cost  
-t4g.medium - 4GB, 2vCPU, 5Gbit network, $0.0120 hourly Spot cost  
-
-For an automated setup, use the Terraform script
-
-```tf
+```bash
 terraform init
 terraform plan 
 terraform apply
@@ -44,7 +45,7 @@ pihole -a -p
 ```
 
 Now you should be able to visit the Pi-hole web interface via
-http://<your-ip>/admin
+http://your.instance.ip/admin
 
 ## Installing PiVPN
 
@@ -68,11 +69,19 @@ curl -L https://install.pivpn.io | bash
 pivpn add 
 cp /home/openvpn/ovpns/*.ovpn /home/ubuntu
 chmod 666 /home/ubuntu/*.ovpn
+```
 
-# Copy the client's .ovpn config file to your desktop
+Next, run the following command on your laptop to copy the `.ovpn` config file
+from the server to local.
+
+```bash
 scp -i <certificate> ubuntu@<ip>:/home/openvpn/ovpns/*.ovpn
 ```
 
 Download the OpenVPN app on your devices (laptop, phone). Then to configure the
 OpenVPN app by passing it your `*.ovpn` file.
 
+<!--
+TODO:
+- Deploy to Azure and GCP as well.
+-->
