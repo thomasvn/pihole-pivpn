@@ -1,3 +1,7 @@
+.DS_Store
 *.swp
 *.ovpn
 SECRETS.md
+.terraform/
+.terraform.lock.hcl
+*.tfstate*
