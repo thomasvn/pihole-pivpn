@@ -83,5 +83,7 @@ OpenVPN app by passing it your `*.ovpn` file.
 
 <!--
 TODO:
+- Gifs for logging onto the OpenVPN server. And for visiting the Pi-hole admin page
 - Deploy to Azure and GCP as well.
+- Start aggregating my own blocklist, so that I have a saved configuration upon teardown and startup
 -->
