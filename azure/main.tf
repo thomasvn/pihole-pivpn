@@ -14,6 +14,7 @@ output "ssh" {
 
 provider "azurerm" {
   features {}
+  subscription_id = "6795a738-debf-49b2-8cef-5b82dda4a2f1"
 }
 
 resource "azurerm_resource_group" "pi-hole-resourcegroup" {
@@ -122,12 +123,6 @@ resource "azurerm_linux_virtual_machine" "pi-hole" {
     sku       = "20_04-lts"
     version   = "latest"
   }
-  # source_image_reference {
-  #   publisher = "Canonical"
-  #   offer     = "0001-com-ubuntu-server-jammy"
-  #   sku       = "22_04-lts-gen2"
-  #   version   = "latest"
-  # }
 
   computer_name   = "pi-hole-vm"
 

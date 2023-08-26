@@ -17,6 +17,15 @@ posterity, I've downloaded the doc and saved it to
 You can use the Terraform script to set up an [AWS t4g.micro instance](https://instances.vantage.sh/?region=us-west-1&selected=t4g.micro) (1GB, 2vCPU, 5Gbit network, $0.0034 hourly Spot cost).
 
 ```bash
+# If using Azure, ensure you point your CLI to the correct profile
+az login
+```
+
+```bash
+# Uninstall a previous installation
+terraform destroy
+
+# Start a new installation
 terraform init
 terraform plan 
 terraform apply
@@ -66,7 +75,7 @@ adduser openvpn
 curl -L https://install.pivpn.io | bash
 
 # Add users to the VPN server (one user per client)
-pivpn add 
+pivpn add
 cp /home/openvpn/ovpns/*.ovpn /home/ubuntu
 chmod 666 /home/ubuntu/*.ovpn
 ```
@@ -75,7 +84,7 @@ Next, run the following command on your laptop to copy the `.ovpn` config file
 from the server to local.
 
 ```bash
-scp -i <certificate> ubuntu@<ip>:/home/openvpn/ovpns/*.ovpn
+scp -i "<certificate>" "ubuntu@<ip>:/home/ubuntu/*.ovpn" .
 ```
 
 Download the OpenVPN app on your devices (laptop, phone). Then to configure the
