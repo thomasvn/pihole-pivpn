@@ -1,3 +1,6 @@
+# Ensure you point your CLI to the correct profile:
+# $ az login
+
 terraform {
   required_providers {
     azurerm = {

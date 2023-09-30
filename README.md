@@ -1,9 +1,10 @@
 # Pi-hole + PiVPN
 
-Set up your own ad-blocking + VPN server! Cool features include:
+Set up your own ad-blocking + VPN server! Features include:
 
 - connecting to your VPN server from any device (laptop, mobile)
-- greater control of your network traffic data (obfuscated from your local network and ISP)
+- greater control of your network traffic data (obfuscated from your local
+  network and ISP)
 - granular control over which hostnames to block/allow
 - automation to teardown & setup a new server (~30min)
 
@@ -13,13 +14,6 @@ posterity, I've downloaded the doc and saved it to
 [`scaleway-pihole.pdf`](./scaleway-pihole.pdf).
 
 ## Set up compute instance
-
-You can use the Terraform script to set up an [AWS t4g.micro instance](https://instances.vantage.sh/?region=us-west-1&selected=t4g.micro) (1GB, 2vCPU, 5Gbit network, $0.0034 hourly Spot cost).
-
-```bash
-# If using Azure, ensure you point your CLI to the correct profile
-az login
-```
 
 ```bash
 # Uninstall a previous installation
@@ -54,7 +48,12 @@ pihole -a -p
 ```
 
 Now you should be able to visit the Pi-hole web interface via
-http://your.instance.ip/admin
+http://YOUR_INSTANCE_PUBLIC_IP/admin
+
+If you are using this Pi-hole as just a DNS server and not a VPN, you will need
+to ensure you configure the Pi-hole to accept non-local requests. Use caution to
+ensure your DNS server is not
+[abused](https://www.cloudflare.com/learning/ddos/dns-amplification-ddos-attack/).
 
 ## Installing PiVPN
 
@@ -93,6 +92,4 @@ OpenVPN app by passing it your `*.ovpn` file.
 <!--
 TODO:
 - Gifs for logging onto the OpenVPN server. And for visiting the Pi-hole admin page
-- Deploy to Azure and GCP as well.
-- Start aggregating my own blocklist, so that I have a saved configuration upon teardown and startup
 -->

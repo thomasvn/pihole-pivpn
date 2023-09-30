@@ -17,9 +17,10 @@ provider "google" {
   credentials = file(var.service_account_key_file)
 }
 
-resource "google_project_service" "compute" {
-  service = "compute.googleapis.com"
-}
+## You should enable the Compute Engine API via the Cloud Console
+# resource "google_project_service" "compute" {
+#   service = "compute.googleapis.com"
+# }
 
 output "ssh" {
   value       = "ssh -i '${var.ssh_key}' ubuntu@${google_compute_instance.pi-hole.network_interface[0].access_config[0].nat_ip}"
@@ -39,22 +40,24 @@ resource "google_compute_firewall" "pi-hole-ports" {
   name    = "pi-hole-ports"
   network = google_compute_network.pi-hole-network.name
 
+  # SSH, HTTP, DNS
   allow {
     protocol = "tcp"
-    ports    = ["22"]
+    ports    = ["22", "80", "53"]
   }
 
+  # DNS, OpenVPN
   allow {
     protocol = "udp"
-    ports    = ["1194"]
+    ports    = ["53", "1194"]
   }
 
   source_ranges = ["0.0.0.0/0"]
 }
 
 resource "google_compute_address" "pi-hole-static-ip" {
-  name   = "pi-hole-static-ip"
-  region = "us-west2"
+  name         = "pi-hole-static-ip"
+  region       = "us-west2"
   network_tier = "STANDARD"
 }
 
@@ -65,7 +68,7 @@ resource "google_compute_address" "pi-hole-static-ip" {
 resource "google_compute_instance" "pi-hole" {
   name         = "pi-hole"
   machine_type = "f1-micro"
-  zone         = "us-west2-b"
+  zone         = "us-west2-a"
 
   boot_disk {
     initialize_params {
