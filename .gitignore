@@ -5,3 +5,4 @@ SECRETS.md
 .terraform/
 .terraform.lock.hcl
 *.tfstate*
+*.tfvars

@@ -15,3 +15,9 @@ variable "ssh_key" {
   type        = string
   default     = "~/.ssh/thomas-gcp.pub"
 }
+
+variable "source_ranges" {
+  description = "List of source IP address ranges"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}

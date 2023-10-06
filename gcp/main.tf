@@ -36,14 +36,27 @@ resource "google_compute_network" "pi-hole-network" {
   auto_create_subnetworks = true
 }
 
-resource "google_compute_firewall" "pi-hole-ports" {
-  name    = "pi-hole-ports"
+resource "google_compute_firewall" "pi-hole-admin-ports" {
+  name    = "pi-hole-admin-ports"
   network = google_compute_network.pi-hole-network.name
 
-  # SSH, HTTP, DNS
+  # SSH, HTTP
   allow {
     protocol = "tcp"
-    ports    = ["22", "80", "53"]
+    ports    = ["22", "80"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+}
+
+resource "google_compute_firewall" "pi-hole-dns-ports" {
+  name    = "pi-hole-dns-ports"
+  network = google_compute_network.pi-hole-network.name
+
+  # DNS
+  allow {
+    protocol = "tcp"
+    ports    = ["53"]
   }
 
   # DNS, OpenVPN
@@ -52,7 +65,7 @@ resource "google_compute_firewall" "pi-hole-ports" {
     ports    = ["53", "1194"]
   }
 
-  source_ranges = ["0.0.0.0/0"]
+  source_ranges = var.source_ranges
 }
 
 resource "google_compute_address" "pi-hole-static-ip" {
@@ -84,7 +97,12 @@ resource "google_compute_instance" "pi-hole" {
     }
   }
 
+  labels = {
+    goog-ops-agent-policy = "v2-x86-template-1-1-0"
+  }
+
   metadata = {
     ssh-keys = "ubuntu:${file(var.ssh_key)}"
+    enable-osconfig = "TRUE"
   }
 }
