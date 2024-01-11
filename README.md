@@ -23,6 +23,9 @@ terraform destroy
 terraform init
 terraform plan 
 terraform apply
+
+# Show the existing installation
+terraform show
 ```
 
 ## Installing Pi-hole
