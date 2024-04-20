@@ -17,7 +17,7 @@ variable "ssh_key" {
 }
 
 variable "source_ranges" {
-  description = "List of source IP address ranges"
+  description = "List of source IP address ranges to allow access to port 53 of the server."
   type        = list(string)
   default     = ["0.0.0.0/0"]
 }
